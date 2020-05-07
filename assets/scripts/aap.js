@@ -13,33 +13,25 @@ mainCategory =[]
 }
 ).then(response => response.json())
 .then(categories =>{
+    const getCategory = categories.categories;
     let html='';
-    for(category in categories){
-        html += `
+    let i = 0;
+    for(category of getCategory){
+         html += `
         <li>
-            <label for="${category.name}">${category.name}</label>
-            <input type="radio" id="${category.id}" name="${category.name}" value="${category.name}>
+            <label for="${category.categories.name}">${category.categories.name}</label>
+            <input type="radio" id="${category.categories.id}" name="${category.categories.name}" value="${category.categories.name}>
         </li>`
-        console.log(category);
-        console.log(html);
-    };
+    }
+    console.log(html);
+    console.log(getCategory);
     categorylist.appendChild = html;
     })
 
 .catch(err=>console.log(err))
  }
  window.onload = loadData();
- /*const renderActivity = function (newData =[]) {
-    const resCategory = {
-        id : newData.id,
-        name : newData.name
-    };
-    mainCategory.push(resCategory);
-    let html ='';
-    mainCategory.forEach(element =>
-        html += `<li>${element.name}</li>`);
-        console.log(mainCategory);
-    categorylist.appendChild(html); } */      
+      
 
 
 
