@@ -2,6 +2,7 @@ const categorylist = document.querySelector(".category-list");
 const cuisineList = document.querySelector(".cuisine-list");
 const restaurantsList = document.querySelector(".restaurants-list");
 const renderSpecialRestaurant = document.querySelector(".display-result");
+const restaurantItems = document.querySelectorAll('.restaurants-list li');
 
 function loadCategory() {
   fetch("https://developers.zomato.com/api/v2.1/categories", {
@@ -32,7 +33,6 @@ function loadCategory() {
       console.log(getCategory);
       categorylist.innerHTML = html;
     })
-
     .catch((err) => console.log(err));
 }
 
@@ -82,7 +82,7 @@ function loadRestaurant() {
       let html = "";
       for (element of getRestaurant) {
         html += `
-            <li>
+            <li id="${element.restaurant.id}">
             ${element.restaurant.name}
         </li>
         <hr>`;
@@ -92,10 +92,12 @@ function loadRestaurant() {
       restaurantsList.innerHTML = html;
     })
     .catch((err) => console.log(err));
+    
 }
 
-function renderSpecificRestaurant() {
-  fetch("https://developers.zomato.com/api/v2.1/restaurant?res_id=19324386", {
+function renderSpecificRestaurant(id) {
+  var url = `https://developers.zomato.com/api/v2.1/restaurant?res_id= ${id}`;
+  fetch(url , {
     headers: {
       "user-key": "2ecb50280a36df15e253695ff94d9695",
       "content-type": "application/json",
@@ -117,7 +119,16 @@ function renderSpecificRestaurant() {
     .catch((err) => console.log(err));
 }
 
+function displayRestaurantInfo(event){
+  var getId = event.target.getAttribute('id');
+  console.log(getId);
+  renderSpecificRestaurant(getId);
+}
+
+
+
 window.onload = loadCategory();
 window.onload = loadCuisine();
 window.onload = loadRestaurant();
-window.onload = renderSpecificRestaurant();
+//window.onload = renderSpecificRestaurant();
+restaurantsList.addEventListener('click',displayRestaurantInfo);
