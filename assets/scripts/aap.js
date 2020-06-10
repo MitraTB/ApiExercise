@@ -3,6 +3,7 @@ const cuisineList = document.querySelector(".cuisine-list");
 const restaurantsList = document.querySelector(".restaurants-list");
 const renderSpecialRestaurant = document.querySelector(".display-result");
 const restaurantItems = document.querySelectorAll('.restaurants-list li');
+const displayResultButton = document.querySelector('.display-result-button');
 
 function loadCategory() {
   fetch("https://developers.zomato.com/api/v2.1/categories", {
@@ -18,14 +19,14 @@ function loadCategory() {
       let html = "";
       let index = 0;
       for (category of getCategory) {
-        if (index === 4) {
+        if (index === 5) {
           break;
         } else {
           html += `
-        <li>
+        <div>
+            <input class="select-category" type="checkbox" id="${category.categories.id}" name="${category}">
             <label for="${category.categories.name}">${category.categories.name}</label>
-            <input class="select-category" type="radio" id="${category.categories.id}" name="${category}" value="${category.categories.name}>
-        </li>`;
+        </div>`;
           index++;
         }
       }
@@ -54,10 +55,10 @@ function loadCuisine() {
           break;
         } else {
           html += `
-        <li>
+        <div>
+            <input class="select-cuisine" type="checkbox" id="${element.cuisine.cuisine_id}" name="${cuisine}">
             <label for="${element.cuisine.cuisine_name}">${element.cuisine.cuisine_name}</label>
-            <input class="select-cuisine" type="radio" id="${element.cuisine.cuisine_id}" name="${cuisine}" value="${element.cuisine.cuisine_name}>
-        </li>`;
+        </div>`;
           index++;
         }
       }
@@ -69,7 +70,7 @@ function loadCuisine() {
 }
 
 function loadRestaurant() {
-  fetch("https://developers.zomato.com/api/v2.1/search?entity_type=city", {
+  fetch("https://developers.zomato.com/api/v2.1/search?cuisines=&category=", {
     method: "get",
     headers: {
       "user-key": "2ecb50280a36df15e253695ff94d9695",
@@ -125,6 +126,13 @@ function displayRestaurantInfo(event){
   renderSpecificRestaurant(getId);
 }
 
+function renderResult(event){
+var getCategoryId = event.target.getAttribute('id');
+var getCuisineId = event.target.getAttribute('id');
+console.log(getCuisineId);
+console.log(getCategoryId);
+loadRestaurant(getCategoryId, getCuisineId);
+}
 
 
 window.onload = loadCategory();
@@ -132,3 +140,4 @@ window.onload = loadCuisine();
 window.onload = loadRestaurant();
 //window.onload = renderSpecificRestaurant();
 restaurantsList.addEventListener('click',displayRestaurantInfo);
+displayResultButton.addEventListener('click', renderResult)

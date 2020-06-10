@@ -86,4 +86,7 @@ ul.category-list li{
     cursor: pointer;
 }
 
-
+.display-result-button{
+    margin-top:120px;
+    margin-left: 100px;
+}
